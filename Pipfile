@@ -7,6 +7,11 @@ name = "pypi"
 pytesseract = "*"
 matplotlib = "*"
 opencv-python = "*"
+fastapi = "*"
+uvicorn = "*"
+pydantic = "*"
+python-multipart = "*"
+prometheus-fastapi-instrumentator = "*"
 
 [dev-packages]
 ipykernel = "*"

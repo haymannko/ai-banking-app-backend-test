@@ -11,7 +11,8 @@ fastapi = "*"
 uvicorn = "*"
 pydantic = "*"
 python-multipart = "*"
-prometheus-fastapi-instrumentator = "*"
+sentry-sdk = "*"
+python-dotenv = "*"
 
 [dev-packages]
 ipykernel = "*"

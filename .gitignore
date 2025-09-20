@@ -84,3 +84,5 @@ Pipfile.lock
 *.png
 *.bmp
 *.gif
+
+.gitignore

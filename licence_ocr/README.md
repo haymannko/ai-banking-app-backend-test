@@ -19,7 +19,7 @@ A FastAPI-based backend application for AI-powered banking services, featuring O
 - **Sentry**: Error monitoring and performance tracking
 - **Uvicorn**: ASGI server for FastAPI
 
-## 📁 Project Structure
+## Project Structure
 
 ```
 ai-banking-app-backend/
@@ -32,7 +32,7 @@ ai-banking-app-backend/
 │   └── test_ocr.py          # Unit tests for OCR functionality
 ├── Pipfile                  # Python dependencies
 ├── Pipfile.lock            # Locked dependency versions
-└── README.md               # This file
+└── README.md               
 ```
 
 ## Installation
@@ -66,7 +66,7 @@ ai-banking-app-backend/
 uvicorn main:app --reload --port 5000
 ```
 
-The server will start on `http://0.0.0.0:5000`
+The server will start on `http://127.0.0.1:5000/`
 
 ### API Endpoints
 
@@ -80,7 +80,7 @@ The server will start on `http://0.0.0.0:5000`
 
 **Example Request:**
 ```bash
-curl -X POST "http://localhost:5000/ocr" \
+curl -X POST "http://127.0.0.1:5000/ocr" \
   -F "file=@path/to/your/image.jpg" \
   -F "class_name=licence"
 ```
@@ -91,6 +91,18 @@ curl -X POST "http://localhost:5000/ocr" \
   "data": "12/ABC(N)1234567"
 }
 ```
+
+## Demonstration
+
+In fastapi http://127.0.0.1:5000/docs 
+
+![In FastAPI Docs](images/ocr_doc.png)  
+*Figure 1: In FastAPI Docs Output*
+
+In Postman you can test:
+
+![In FastAPI Docs](images/ocr_postman.png)  
+*Figure 2: In Postman Output*
 
 ## Testing
 

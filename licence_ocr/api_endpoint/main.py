@@ -73,4 +73,4 @@ def ocr_endpoint(file: UploadFile = File(...), class_name: Literal['passport', '
         raise HTTPException(status_code=500, detail="OCR processing failed")
     
 if __name__ == "__main__":
-    uvicorn.run(app, host="0.0.0.0", port=5000)
+    uvicorn.run(app, host="0.0.0.0", port=5001)

@@ -1,4 +1,4 @@
-# AI Banking App Backend
+# AI Banking App Backend (NRC-OCR)
 
 A FastAPI-based backend application for AI-powered banking services, featuring OCR capabilities for document processing including license and passport recognition.
 
@@ -63,10 +63,10 @@ ai-banking-app-backend/
 ### Starting the API Server in *licence_ocr/api_endpoint* directory
 
 ```bash
-uvicorn main:app --reload --port 5000
+uvicorn main:app --reload --port 5001 
 ```
 
-The server will start on `http://127.0.0.1:5000/`
+The server will start on `http://127.0.0.1:5001/`
 
 ### API Endpoints
 
@@ -78,9 +78,22 @@ The server will start on `http://127.0.0.1:5000/`
     - `class_name`: Document type - either "passport" or "licence" (Form)
   - **Response**: JSON with extracted text data
 
+## Docker 
+### Docker build
+```
+docker build -f licence_ocr/api_endpoint/Dockerfile -t nrc-ocr .
+```
+
+### Docker run 
+
+```bash
+docker run -p 5001:5000 nrc-ocr
+```
+
+
 **Example Request:**
 ```bash
-curl -X POST "http://127.0.0.1:5000/ocr" \
+curl -X POST "http://127.0.0.1:5001/ocr" \
   -F "file=@path/to/your/image.jpg" \
   -F "class_name=licence"
 ```
@@ -151,6 +164,6 @@ The application includes Sentry integration for:
 ## API Documentation
 
 Once the server is running, visit:
-- **Swagger UI**: `http://localhost:5000/docs`
-- **ReDoc**: `http://localhost:5000/redoc`
+- **Swagger UI**: `http://localhost:5001/docs`
+- **ReDoc**: `http://localhost:5001/redoc`
 

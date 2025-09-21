@@ -1,3 +1,5 @@
+"""API endpoint for OCR processing of licences and passports."""
+
 from ocr_model import OCR_Model
 from fastapi import FastAPI, UploadFile, File, HTTPException, Form
 import uvicorn

@@ -1,3 +1,5 @@
+"""OCR Model for extracting NRC and Passport from images."""
+
 import cv2 
 import pytesseract
 import re 

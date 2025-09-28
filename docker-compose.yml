@@ -1,0 +1,23 @@
+version: '3.8'
+services:
+  camera-api:
+    build:
+      context: ./camera_detect/api_endpoint
+      dockerfile: Dockerfile
+    container_name: camera_api
+    ports:
+      - "5006:5006"
+    environment:
+      - PYTHONUNBUFFERED=1
+    restart: unless-stopped
+
+  licence-ocr:
+    build:
+      context: ./licence_ocr/api_endpoint
+      dockerfile: Dockerfile
+    container_name: licence_ocr
+    ports:
+      - "5001:5001"
+    environment:
+      - PORT=5001
+    restart: unless-stopped

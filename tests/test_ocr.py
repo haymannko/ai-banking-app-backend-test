@@ -2,16 +2,18 @@
 Unit tests for the OCR model.
 """
 
-import unittest
-import sys
 import os
-
-sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
-
+import sys
+import unittest
 from licence_ocr.api_endpoint.ocr_model import OCR_Model
+
+sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
+
+
 
 class TestLicenceOCR(unittest.TestCase):
     """Tests for the Licence OCR model."""
+
     def setUp(self):
         """Set up the OCR model with a test image for liceence."""
         self.ocr_model = OCR_Model("test.jpg")
@@ -27,10 +29,12 @@ class TestLicenceOCR(unittest.TestCase):
         gray_img = self.ocr_model.preprocess_image_for_licence_ocr()
         nrc = self.ocr_model.licence_ocr_model(gray_img)
         self.assertIsInstance(nrc, str)
-        self.assertRegex(nrc, r'\d{1,2}/[A-Z ]+\(N\)[0-9O]{5,7}')
+        self.assertRegex(nrc, r"\d{1,2}/[A-Z ]+\(N\)[0-9O]{5,7}")
+
 
 class TestPassportOCR(unittest.TestCase):
     """Tests for the Passport OCR model for Passport."""
+
     def setUp(self):
         """Set up the OCR model with a test image for passport."""
         self.ocr_model = OCR_Model("test1.jpeg")
@@ -48,5 +52,6 @@ class TestPassportOCR(unittest.TestCase):
         self.assertIsInstance(passport_number, str)
         self.assertRegex(passport_number, r"\b[A-Z]{1,2}[0-9]{6,8}\b")
 
-if __name__ == '__main__':
+
+if __name__ == "__main__":
     unittest.main()

@@ -6,6 +6,7 @@ A FastAPI-based backend application for AI-powered banking services, featuring O
 
 - **Document OCR Processing**: Extract text from license and passport images
 - **FastAPI REST API**: High-performance async API endpoints
+- **gRPC**: High-performance async protobufs endpoints
 - **Error Monitoring**: Integrated Sentry for error tracking and monitoring
 - **Image Preprocessing**: Advanced image enhancement for better OCR accuracy
 - **Comprehensive Testing**: Unit tests for OCR functionality
@@ -14,6 +15,7 @@ A FastAPI-based backend application for AI-powered banking services, featuring O
 
 - **Python**: 3.11.13
 - **FastAPI**: Modern, fast web framework for building APIs
+- **gRPC**: Modern open source high performance Remote Procedure Call (RPC) framework 
 - **OpenCV**: Computer vision library for image processing
 - **Tesseract OCR**: Optical character recognition engine
 - **Sentry**: Error monitoring and performance tracking
@@ -22,17 +24,26 @@ A FastAPI-based backend application for AI-powered banking services, featuring O
 ## Project Structure
 
 ```
-ai-banking-app-backend/
-├── licence_ocr/
-│   ├── api_endpoint/
-│   │   ├── main.py          # FastAPI application and endpoints
-│   │   └── ocr_model.py     # OCR model implementation
-│   └── utils.py             # Utility functions and testing
-├── tests/
-│   └── test_ocr.py          # Unit tests for OCR functionality
-├── Pipfile                  # Python dependencies
-├── Pipfile.lock            # Locked dependency versions
-└── README.md               
+licence_ocr/
+├── README.md
+├── utils.py
+├── api_endpoint/
+│   ├── Dockerfile
+│   ├── ocr.proto
+│   ├── __pycache__/
+│   ├── gRPC/
+│   │   ├── ocr_client.py
+│   │   ├── ocr_grpc_model.py
+│   │   ├── ocr_pb2_grpc.py
+│   │   ├── ocr_pb2.py
+│   │   └── ocr_server.py
+│   └── rest/
+│       ├── main.py
+│       ├── ocr_model.py
+│       └── __pycache__/
+├── images/
+│   ├── ocr_doc.png
+│   └── ocr_postman.png
 ```
 
 ## Installation
@@ -60,7 +71,40 @@ ai-banking-app-backend/
 
 ## Usage
 
-### Starting the API Server in *licence_ocr/api_endpoint* directory
+### gRPC Server & Client 
+
+The `licence_ocr/api_endpoint/gRPC/` directory provides a gRPC-based interface for OCR services, in addition to the REST API.
+
+**Key files:**
+
+- `ocr_server.py`: gRPC server for OCR processing
+- `ocr_client.py`: Example gRPC client
+- `ocr_pb2.py`, `ocr_pb2_grpc.py`: Generated from `ocr.proto` (do not edit manually)
+- `ocr_grpc_model.py`: Model logic for gRPC
+
+#### Running the gRPC Server
+
+```bash
+cd licence_ocr/api_endpoint/gRPC
+python ocr_server.py
+```
+
+#### Running the gRPC Client
+
+```bash
+python ocr_client.py
+```
+
+#### Regenerating gRPC Code 
+
+```bash
+python -m grpc_tools.protoc -I. --python_out=. --grpc_python_out=. ocr.proto
+```
+
+---
+
+
+### Starting the API Server in *licence_ocr/api_endpoint/rest* directory
 
 ```bash
 uvicorn main:app --reload --port 5001 

@@ -2,7 +2,7 @@
 OCR Model calls
 """
 
-from api_endpoint.ocr_model import OCR_Model
+from licence_ocr.api_endpoint.ocr_model import OCR_Model
 
 ocr = OCR_Model(image_path="f28c917b-7483-4249-b761-1ec60101f9c8.jpeg")
 

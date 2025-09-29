@@ -13,6 +13,9 @@ pydantic = "*"
 python-multipart = "*"
 sentry-sdk = "*"
 python-dotenv = "*"
+grpcio = "*"
+grpcio-tools = "*"
+mediapipe = "*"
 
 [dev-packages]
 ipykernel = "*"

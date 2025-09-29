@@ -1,0 +1,21 @@
+syntax = "proto3";
+
+package nrc_ocr;
+
+service nrc_ocr_service {
+    rpc AddLicenceOCR(AddLICENCEOCR) returns (AddOutputNRC);
+    rpc AddLicencePassport(AddLICENCEPASSPORT) returns (AddOutputNRC);
+}
+
+
+message AddLICENCEOCR {
+    bytes licence = 1;
+}
+
+message AddLICENCEPASSPORT{
+    bytes passport = 1;
+}
+
+message AddOutputNRC {
+    string output_nrc = 1;
+}

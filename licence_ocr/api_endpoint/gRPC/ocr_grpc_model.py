@@ -1,8 +1,13 @@
+import cv2 
+import pytesseract
+import re 
+import numpy as np
+
 class OCR_Model:
     """OCR Model for extracting NRC and Passport from images."""
 
     def __init__(self, image_path: str = None, image_bytes: bytes = None):
-        self.image_path = image_path
+        self.image_path = image_path 
         self.image_bytes = image_bytes
 
     def load_image(self):
@@ -46,35 +51,3 @@ class OCR_Model:
         matches = re.findall(pattern, result)
         return matches[0] if matches else None
 
-
-
-import grpc
-from concurrent import futures
-import ocr_pb2, ocr_pb2_grpc
-from ocr_model import OCR_Model
-
-
-class NrcOcrService(ocr_pb2_grpc.nrc_ocr_serviceServicer):
-    def AddLicenceOCR(self, request, context):
-        ocr = OCR_Model(image_bytes=request.licence)
-        gray = ocr.preprocess_image_for_licence_ocr()
-        nrc = ocr.licence_ocr_model(gray)
-        return ocr_pb2.AddOutputNRC(output_nrc=nrc or "")
-
-    def AddLicencePassport(self, request, context):
-        ocr = OCR_Model(image_bytes=request.passport)
-        gray = ocr.preprocess_image_for_passport_ocr()
-        passport_no = ocr.passport_ocr_model(gray)
-        return ocr_pb2.AddOutputNRC(output_nrc=passport_no or "")
-
-
-def serve():
-    server = grpc.server(futures.ThreadPoolExecutor(max_workers=10))
-    ocr_pb2_grpc.add_nrc_ocr_serviceServicer_to_server(NrcOcrService(), server)
-    server.add_insecure_port("[::]:50051")
-    server.start()
-    server.wait_for_termination()
-
-
-if __name__ == "__main__":
-    serve()

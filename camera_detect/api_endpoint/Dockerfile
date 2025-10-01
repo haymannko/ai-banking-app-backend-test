@@ -1,24 +1,23 @@
-FROM python:3.11-slim
+FROM ubuntu:22.04
 
-ENV PYTHONDONTWRITEBYTECODE 1
-ENV PYTHONUNBUFFERED 1
+ENV PORT=5006
+EXPOSE $PORT
 
 WORKDIR /app
 
-RUN apt-get update && apt-get install -y \
-    libtesseract-dev \
-    libgl1 \
-    libglib2.0-0 \
+RUN apt-get update && apt-get install -y python3 python3-pip python3-venv \
+    libgl1 libglib2.0-0 \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
 
+RUN pip install pipenv
+
 COPY Pipfile Pipfile.lock ./
 
-RUN pip install pipenv && \
-    pipenv install --deploy --system
+RUN pipenv install --system --deploy
 
-COPY . /app
+RUN pip install pydantic-core exceptiongroup
 
-EXPOSE 5006
+COPY ./camera_detect/api_endpoint /app
 
 CMD ["uvicorn", "cam_api:app", "--host", "0.0.0.0", "--port", "5006"]

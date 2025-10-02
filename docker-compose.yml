@@ -1,0 +1,35 @@
+version: '3.8'
+
+services:
+  camera_detect:
+    build:
+      context: .
+      dockerfile: camera_detect/api_endpoint/Dockerfile
+    container_name: camera_detect_service
+    restart: always
+    ports:
+      - "5006:5006"  
+    volumes:
+      - ./camera_detect:/app
+    command: uvicorn cam_api:app --host 0.0.0.0 --port 5006
+    networks:
+      - backend
+
+  licence_ocr_rest:
+    build:
+      context: .
+      dockerfile:  licence_ocr/api_endpoint/Dockerfile
+    container_name: licence_ocr_rest
+    restart: always
+    ports:
+      - "5001:5001"
+    volumes:
+      - ./licence_ocr/api_endpoint:/app
+    working_dir: /app
+    command: uvicorn main:app --host 0.0.0.0 --port 5001
+    networks:
+      - backend
+
+networks:
+  backend:
+    driver: bridge

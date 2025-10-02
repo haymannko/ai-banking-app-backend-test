@@ -4,8 +4,21 @@ verify_ssl = true
 name = "pypi"
 
 [packages]
+pytesseract = "*"
+matplotlib = "*"
+opencv-python = "*"
+fastapi = "*"
+uvicorn = "*"
+pydantic = "*"
+python-multipart = "*"
+sentry-sdk = "*"
+python-dotenv = "*"
+grpcio = "*"
+grpcio-tools = "*"
+mediapipe = "*"
 
 [dev-packages]
+ipykernel = "*"
 
 [requires]
 python_version = "3.11"

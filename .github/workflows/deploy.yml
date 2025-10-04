@@ -17,11 +17,11 @@ jobs:
           - name: camera_detect
             context: ./camera_detect/api_endpoint
             dockerfile: ./camera_detect/api_endpoint/Dockerfile
-            image: haymannko/camera-api
+            image: camera-api
           - name: licence_ocr_rest
             context: ./licence_ocr/api_endpoint
             dockerfile: ./licence_ocr/api_endpoint/Dockerfile
-            image: haymannko/licence-api
+            image: licence-api
 
     steps:
       - name: Checkout code
@@ -53,3 +53,4 @@ jobs:
       - name: Confirm built/pushed image
         run: |
           echo "✅ Image processed: ${{ matrix.service.image }}:latest"
+

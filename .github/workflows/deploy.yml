@@ -51,4 +51,5 @@ jobs:
             ${{ matrix.service.image }}:${{ github.sha }}
 
       - name: Confirm built/pushed image
-        run: echo "✅ Image processed: ${{ matrix.service.image }}:latest"
+        run: |
+          echo "✅ Image processed: ${{ matrix.service.image }}:latest"

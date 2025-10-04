@@ -1,6 +1,7 @@
 
 
-name: Build & Deploy Docker Image
+
+name: Build & Deploy Docker Images
 
 on:
   pull_request:
@@ -8,14 +9,23 @@ on:
   push:
     branches: [ "dev" ]
 
-env:
-  IMAGE_NAME: haymannko/flask-app   # <-- replace with your DockerHub repo name
-  IMAGE_TAG: latest
-
 jobs:
   build:
     name: Build Docker image
     runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        service:
+          - name: camera_detect
+            context: ./camera_detect
+            dockerfile: ./camera_detect/api_endpoint/Dockerfile
+            image: haymannko/camera-detect
+          - name: licence_ocr_rest
+            context: ./licence_ocr/api_endpoint
+            dockerfile: ./licence_ocr/api_endpoint/Dockerfile
+            image: haymannko/licence-ocr-rest
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -26,29 +36,26 @@ jobs:
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
 
-      # Build image (push only if it's a merge into dev)
-      - name: Build Docker image
+      - name: Build image
         uses: docker/build-push-action@v5
         with:
-          context: .
+          context: ${{ matrix.service.context }}
+          file: ${{ matrix.service.dockerfile }}
           push: ${{ github.event_name == 'push' }}
           tags: |
-            ${{ env.IMAGE_NAME }}:${{ env.IMAGE_TAG }}
-            ${{ env.IMAGE_NAME }}:${{ github.sha }}
+            ${{ matrix.service.image }}:latest
+            ${{ matrix.service.image }}:${{ github.sha }}
 
-      # Confirm image built
-      - name: List Docker images
-        run: docker images | grep flask-app
+      - name: Run docker images
+        run: docker images | grep ${{ matrix.service.image }}
 
-      # Security scan
       - name: Scan image with Trivy
-        uses: aquasecurity/trivy-action@0.14.0
+        uses: aquasecurity/trivy-action@master
         with:
-          image-ref: ${{ env.IMAGE_NAME }}:${{ github.sha }}
+          image-ref: ${{ matrix.service.image }}:${{ github.sha }}
           format: 'table'
           exit-code: '0'
 
-      # DockerHub login + push (only on push to dev)
       - name: Log in to Docker Hub
         if: github.event_name == 'push'
         uses: docker/login-action@v2
@@ -58,6 +65,4 @@ jobs:
 
       - name: Confirm pushed image
         if: github.event_name == 'push'
-        run: |
-          echo "✅ Image pushed: ${{ env.IMAGE_NAME }}:${{ env.IMAGE_TAG }}"
-          echo "✅ Commit image: ${{ env.IMAGE_NAME }}:${{ github.sha }}"
+        run: echo "Image pushed: ${{ matrix.service.image }}:latest"

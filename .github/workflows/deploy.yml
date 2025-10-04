@@ -9,7 +9,7 @@ on:
     branches: [ "dev" ]
 
 env:
-  IMAGE_NAME: ${{ secrets.DOCKER_USERNAME }}/banking-app
+  IMAGE_NAME: ${{ secrets.DOCKER_USERNAME }}/flask-app
   IMAGE_TAG: latest
 
 jobs:

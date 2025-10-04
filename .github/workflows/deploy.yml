@@ -15,12 +15,12 @@ jobs:
       matrix:
         service:
           - name: camera_detect
-            context: ./camera_detect/api_endpoint
-            dockerfile: ./camera_detect/api_endpoint/Dockerfile
+            context: camera_detect/api_endpoint
+            dockerfile: camera_detect/api_endpoint/Dockerfile
             image: camera-api
           - name: licence_ocr_rest
-            context: ./licence_ocr/api_endpoint
-            dockerfile: ./licence_ocr/api_endpoint/Dockerfile
+            context: licence_ocr/api_endpoint
+            dockerfile: licence_ocr/api_endpoint/Dockerfile
             image: licence-api
 
     steps:
@@ -53,4 +53,5 @@ jobs:
       - name: Confirm built/pushed image
         run: |
           echo "✅ Image processed: ${{ matrix.service.image }}:latest"
+
 

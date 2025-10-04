@@ -9,7 +9,7 @@ on:
     branches: [ "dev" ]
 
 env:
-  IMAGE_NAME: ${{ secrets.DOCKER_USERNAME }}/flask-app
+  IMAGE_NAME: haymannko/flask-app   # <-- replace with your DockerHub repo name
   IMAGE_TAG: latest
 
 jobs:
@@ -26,29 +26,29 @@ jobs:
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
 
-      # Build image but don't push on PRs
-      - name: Build image
+      # Build image (push only if it's a merge into dev)
+      - name: Build Docker image
         uses: docker/build-push-action@v5
         with:
           context: .
-          push: ${{ github.event_name == 'push' }} # only push on merge
+          push: ${{ github.event_name == 'push' }}
           tags: |
             ${{ env.IMAGE_NAME }}:${{ env.IMAGE_TAG }}
             ${{ env.IMAGE_NAME }}:${{ github.sha }}
 
-      # Confirm built image locally (works on both PR and push)
-      - name: Run docker images
-        run: docker images | grep ${{ env.IMAGE_NAME }}
+      # Confirm image built
+      - name: List Docker images
+        run: docker images | grep flask-app
 
-      # Optional security scan step
+      # Security scan
       - name: Scan image with Trivy
-        uses: aquasecurity/trivy-action@master
+        uses: aquasecurity/trivy-action@0.14.0
         with:
           image-ref: ${{ env.IMAGE_NAME }}:${{ github.sha }}
           format: 'table'
-          exit-code: '0'   # change to '1' to fail pipeline if vulnerabilities found
+          exit-code: '0'
 
-      # Only login + push when it's a push (merge) event
+      # DockerHub login + push (only on push to dev)
       - name: Log in to Docker Hub
         if: github.event_name == 'push'
         uses: docker/login-action@v2
@@ -59,4 +59,5 @@ jobs:
       - name: Confirm pushed image
         if: github.event_name == 'push'
         run: |
-          echo "Image pushed: ${{ env.IMAGE_NAME }}:${{ env.IMAGE_TAG }}"
+          echo "✅ Image pushed: ${{ env.IMAGE_NAME }}:${{ env.IMAGE_TAG }}"
+          echo "✅ Commit image: ${{ env.IMAGE_NAME }}:${{ github.sha }}"

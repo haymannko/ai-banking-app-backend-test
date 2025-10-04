@@ -65,4 +65,4 @@ jobs:
 
       - name: Confirm pushed image
         if: github.event_name == 'push'
-        run: echo "Image pushed: ${{ matrix.service.image }}:latest"
+        run: echo "Image pushed: ${{matrix.service.image}}:latest"

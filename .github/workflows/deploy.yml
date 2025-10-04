@@ -31,7 +31,7 @@ jobs:
         uses: docker/build-push-action@v5
         with:
           context: .
-          push: ${{ github.event_name == 'push' }} # only push on merge (push to main)
+          push: ${{ github.event_name == 'push' }} # only push on merge
           tags: |
             ${{ env.IMAGE_NAME }}:${{ env.IMAGE_TAG }}
             ${{ env.IMAGE_NAME }}:${{ github.sha }}
@@ -42,7 +42,7 @@ jobs:
 
       # Optional security scan step
       - name: Scan image with Trivy
-        uses: aquasecurity/trivy-action@v1
+        uses: aquasecurity/trivy-action@master
         with:
           image-ref: ${{ env.IMAGE_NAME }}:${{ github.sha }}
           format: 'table'

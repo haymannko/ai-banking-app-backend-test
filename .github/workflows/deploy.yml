@@ -18,7 +18,7 @@ jobs:
       matrix:
         service:
           - name: camera_detect
-            context: ./camera_detect
+            context: ./camera_detect/api_endpoint
             dockerfile: ./camera_detect/api_endpoint/Dockerfile
             image: haymannko/camera-detect
           - name: licence_ocr_rest

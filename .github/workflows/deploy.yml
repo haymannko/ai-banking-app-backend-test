@@ -4,9 +4,9 @@ name: Build & Deploy Docker Image
 
 on:
   pull_request:
-    branches: [ "main" ]
+    branches: [ "dev" ]
   push:
-    branches: [ "main" ]
+    branches: [ "dev" ]
 
 env:
   IMAGE_NAME: ${{ secrets.DOCKER_USERNAME }}/banking-app

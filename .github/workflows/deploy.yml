@@ -1,5 +1,6 @@
 
 
+
 name: Build & Deploy Docker Images
 
 on:
@@ -33,6 +34,17 @@ jobs:
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
 
+      - name: Build Docker image
+        uses: docker/build-push-action@v5
+        with:
+          context: ${{ matrix.service.context }}
+          file: ${{ matrix.service.dockerfile }}
+          push: false
+          tags: ${{ matrix.service.image }}:build-test
+
+      - name: Confirm build
+        run: echo "✅ Successfully built image: ${{ matrix.service.image }}:build-test"
+
           # - name: Log in to Docker Hub
           #   if: github.event_name == 'push'
           #   uses: docker/login-action@v2
@@ -53,7 +65,3 @@ jobs:
           # - name: Confirm built/pushed image
           #   run: |
           #     echo " Image processed: ${{ matrix.service.image }}:latest"
-
-
-
-

@@ -1,12 +1,11 @@
 
 
-
-name: Build & Deploy Docker Images
+name: Build Docker Images
 
 on:
-  pull_request:
-    branches: ["dev"]
   push:
+    branches: ["dev"]
+  pull_request:
     branches: ["dev"]
 
 jobs:
@@ -16,53 +15,25 @@ jobs:
       matrix:
         service:
           - name: camera_detect
-            context: camera_detect/api_endpoint
-            dockerfile: camera_detect/api_endpoint/Dockerfile
+            context: ./camera_detect/api_endpoint
+            dockerfile: ./camera_detect/api_endpoint/Dockerfile
             image: camera-api
           - name: licence_ocr_rest
-            context: licence_ocr/api_endpoint
-            dockerfile: licence_ocr/api_endpoint/Dockerfile
+            context: ./licence_ocr/api_endpoint
+            dockerfile: ./licence_ocr/api_endpoint/Dockerfile
             image: licence-api
 
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Set up QEMU
-        uses: docker/setup-qemu-action@v3
-
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
 
-      - name: Build Docker image
+      - name: Build Docker image only
         uses: docker/build-push-action@v5
         with:
           context: ${{ matrix.service.context }}
           file: ${{ matrix.service.dockerfile }}
           push: false
-          tags: ${{ matrix.service.image }}:build-test
-
-      - name: Confirm build
-        run: |
-          echo "Successfully built image: ${{ matrix.service.image }}:build-test"
-
-          # - name: Log in to Docker Hub
-          #   if: github.event_name == 'push'
-          #   uses: docker/login-action@v2
-          #   with:
-          #     username: ${{ secrets.DOCKER_USERNAME }}
-          #     password: ${{ secrets.DOCKER_PASSWORD }}
-
-          # - name: Build and (conditionally) Push Docker image
-          #   uses: docker/build-push-action@v5
-          #   with:
-          #     context: ${{ matrix.service.context }}
-          #     file: ${{ matrix.service.dockerfile }}
-          #     push: ${{ github.event_name == 'push' }}
-          #     tags: |
-          #       ${{ matrix.service.image }}:latest
-          #       ${{ matrix.service.image }}:${{ github.sha }}
-
-          # - name: Confirm built/pushed image
-          #   run: |
-          #     echo " Image processed: ${{ matrix.service.image }}:latest"
+          tags: ${{ matrix.service.image }}:latest

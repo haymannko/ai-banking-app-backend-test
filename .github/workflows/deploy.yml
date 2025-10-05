@@ -43,7 +43,8 @@ jobs:
           tags: ${{ matrix.service.image }}:build-test
 
       - name: Confirm build
-        run: echo "✅ Successfully built image: ${{ matrix.service.image }}:build-test"
+        run: |
+          echo "Successfully built image: ${{ matrix.service.image }}:build-test"
 
           # - name: Log in to Docker Hub
           #   if: github.event_name == 'push'

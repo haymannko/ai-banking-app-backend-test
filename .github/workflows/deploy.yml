@@ -52,6 +52,7 @@ jobs:
 
       - name: Confirm built/pushed image
         run: |
-          echo "✅ Image processed: ${{ matrix.service.image }}:latest"
+          echo " Image processed: ${{ matrix.service.image }}:latest"
+
 
 
